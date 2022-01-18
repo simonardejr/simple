@@ -39,16 +39,16 @@ class CategoryDAO extends DAO
 
     public function countProductsInCategory($id)
     {
-        $sql = "SELECT count(products.id) as total, FROM products 
-                where category_id = :id
-                ORDER BY products.id";
+        $sql = "SELECT count(products.id) as total FROM products 
+                WHERE category_id = :id";
         try {
             $stmt = $this->connection->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             $categories = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Category', ['name', 'description', 'id']);
 
-            return $categories;
+            return ( count($categories) > 0 );
+
         } catch (PDOException $e) {
             throw new PDOException($e);
         }
@@ -113,16 +113,23 @@ class CategoryDAO extends DAO
 
     public function delete($id)
     {
-        $sql = "DELETE FROM categories WHERE id = :id";
-        $stmt = $this->connection->prepare($sql);
 
-        $stmt->bindParam(':id', $id);
+        if( ! $this->countProductsInCategory($id) ) {
+            $sql = "DELETE FROM categories WHERE id = :id";
+            $stmt = $this->connection->prepare($sql);
 
-        try {
-            $stmt->execute();
-            return true;
-        } catch (PDOException $e) {
-            throw new PDOException($e);
+            $stmt->bindParam(':id', $id);
+
+            try {
+                $stmt->execute();
+                return true;
+            } catch (PDOException $e) {
+                throw new PDOException($e);
+            }
+        } else {
+            // throw new Exception('The category has products. Cannot delete.');
+            return false;
         }
     }
+
 }
