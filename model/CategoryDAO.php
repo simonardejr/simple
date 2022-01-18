@@ -24,7 +24,7 @@ class CategoryDAO extends DAO
         $sql = "SELECT categories.id, categories.name, categories.description, count(products.id) as total 
                 FROM categories 
                 LEFT JOIN products ON products.category_id = categories.id
-                GROUP BY products.category_id 
+                GROUP BY categories.id 
                 ORDER BY categories.id";
         try {
             $stmt = $this->connection->prepare($sql);
