@@ -47,7 +47,7 @@ class CategoryDAO extends DAO
             $stmt->execute();
             $categories = $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Category', ['name', 'description', 'id']);
 
-            return ( count($categories) > 0 );
+            return ( array_pop($categories)->total > 0 );
 
         } catch (PDOException $e) {
             throw new PDOException($e);
