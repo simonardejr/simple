@@ -67,14 +67,11 @@ class CategoryController
                 $categoryDAO->insert($newCategory);
                 header('location: index.php?category=index');
             } else {
-                // $this->data = [];
-                // $catDAO = new CategoryDAO;
-                // $categories = $catDAO->selectAll();
-                // $this->data['categories'] =  $categories;
-                // $this->data['errors'] = $this->handleValidationErrors($v->errors());
-                // View::load('view/template/header.html');
-                // View::load('view/product/create.php', $this->data);
-                // View::load('view/template/footer.html');
+                $this->data = [];
+                $this->data['errors'] = $this->handleValidationErrors($v->errors());
+                View::load('view/template/header.html');
+                View::load('view/category/create.php', $this->data);
+                View::load('view/template/footer.html');
             }
         } catch (PDOException $e) {
             echo $e->getMessage();
