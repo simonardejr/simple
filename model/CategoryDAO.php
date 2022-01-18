@@ -21,12 +21,11 @@ class CategoryDAO extends DAO
 
     public function selectAllWithProductsCount()
     {
-        $sql = "SELECT *, count(products.id) as total, products.name as pname FROM categories 
-                left join products on products.id = categories.id
-                
-                group by products.id
-                
-                ORDER BY products.id";
+        $sql = "SELECT categories.id, categories.name, categories.description, count(products.id) as total 
+                FROM categories 
+                LEFT JOIN products ON products.category_id = categories.id
+                GROUP BY products.category_id 
+                ORDER BY categories.id";
         try {
             $stmt = $this->connection->prepare($sql);
             $stmt->execute();

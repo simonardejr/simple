@@ -16,8 +16,8 @@ class CategoryController
         $catdao = new CategoryDAO();
 
         try {
-            $categories = $catdao->selectAll();
-            // $categories = $catdao->selectAllWithProductsCount();
+            // $categories = $catdao->selectAll();
+            $categories = $catdao->selectAllWithProductsCount();
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
