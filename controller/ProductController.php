@@ -125,11 +125,12 @@ class ProductController
             if ($v->validate()) {
                 $product = new Product();
 
+                $product->setId($data['id']);
                 $product->setName($data['name']);
                 $product->setDescription($data['description']);
                 $product->setImage($data['image']);
                 $product->setPrice($data['price']);
-                $product->setCategoryId($data['category']);;
+                $product->setCategoryId($data['category']);
                 $prodDAO->update($product);
                 header('location: index.php?product=index');
             } else {
